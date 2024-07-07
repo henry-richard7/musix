@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musix/models/charts_model.dart';
+import 'package:musix/pages/playlist_details_page.dart';
 
 class ChartComponent {
   InkWell chartComponent(Charts charts, BuildContext context) {
@@ -9,7 +10,14 @@ class ChartComponent {
         decoration: boxDecoration(charts),
       ),
       onTap: () {
-        print(charts.listid);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PlaylistDetailsPage(
+              playlistId: charts.listid.toString(),
+            ),
+          ),
+        );
       },
     );
   }

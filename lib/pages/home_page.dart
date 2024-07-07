@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:musix/api/jio.dart';
 import 'package:musix/components/albums_component.dart';
 import 'package:musix/components/chart_component.dart';

@@ -140,7 +140,7 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                     ),
                   ),
                   onTap: () {
-                    print(songs[index]['id']);
+                    var songId = songs[index]['id'];
                   },
                 ),
               );

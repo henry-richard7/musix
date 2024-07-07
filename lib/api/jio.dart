@@ -78,7 +78,7 @@ class JioApi {
       "cc": "in",
       "listid": listId,
       "_format": "json",
-      "_marker": 0,
+      "_marker": "0",
     };
 
     Uri searchPageUrl =

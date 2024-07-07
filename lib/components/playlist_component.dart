@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musix/models/featured_playlist.dart';
+import 'package:musix/pages/playlist_details_page.dart';
 
 class PlaylistComponent {
   InkWell playlistComponent(
@@ -10,7 +11,14 @@ class PlaylistComponent {
         decoration: boxDecoration(featuredPlaylists),
       ),
       onTap: () {
-        print(featuredPlaylists.listid);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PlaylistDetailsPage(
+              playlistId: featuredPlaylists.listid.toString(),
+            ),
+          ),
+        );
       },
     );
   }
