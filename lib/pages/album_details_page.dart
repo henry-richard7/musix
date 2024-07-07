@@ -117,26 +117,31 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
             scrollDirection: Axis.vertical,
             itemBuilder: (context, index) {
               return Card(
-                child: ListTile(
-                  title: Text(
-                    HtmlUnescape().convert(
-                      songs[index]['song'].toString(),
+                child: InkWell(
+                  child: ListTile(
+                    title: Text(
+                      HtmlUnescape().convert(
+                        songs[index]['song'].toString(),
+                      ),
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(
-                    HtmlUnescape().convert(
-                      songs[index]['primary_artists'].toString(),
+                    subtitle: Text(
+                      HtmlUnescape().convert(
+                        songs[index]['primary_artists'].toString(),
+                      ),
+                      style: const TextStyle(fontSize: 14),
                     ),
-                    style: const TextStyle(fontSize: 14),
+                    leading: Image.network(
+                      songs[index]['image']
+                          .toString()
+                          .replaceAll("150x150", "500x500"),
+                      filterQuality: FilterQuality.high,
+                    ),
                   ),
-                  leading: Image.network(
-                    songs[index]['image']
-                        .toString()
-                        .replaceAll("150x150", "500x500"),
-                    filterQuality: FilterQuality.high,
-                  ),
+                  onTap: () {
+                    print(songs[index]['id']);
+                  },
                 ),
               );
             }),
