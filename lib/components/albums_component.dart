@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musix/models/home_albums.dart';
+import 'package:musix/pages/album_details_page.dart';
 
 class AlbumsComponent {
   InkWell albumCard(HomeAlbums homeAlbum, BuildContext context) {
@@ -10,7 +11,14 @@ class AlbumsComponent {
         child: childElements(homeAlbum),
       ),
       onTap: () {
-        print(homeAlbum.albumid);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AlbumDetailsPage(
+              albumId: homeAlbum.albumid.toString(),
+            ),
+          ),
+        );
       },
     );
   }
