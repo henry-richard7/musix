@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:musix/api/jio.dart';
 import 'package:musix/components/albums_component.dart';
 import 'package:musix/components/chart_component.dart';
@@ -17,7 +18,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  static final List<String> languages = ["Tamil", "English", "Hindi", ""];
+  static final List<String> languages = [
+    "Tamil",
+    "English",
+    "Hindi",
+    "Telugu",
+    "Punjabi",
+    "Marathi",
+    "Gujarati",
+    "Bengali",
+    "Kannada",
+    "Bhojpuri",
+    "Malayalam",
+    "Urdu",
+    "Haryanvi",
+    "Rajasthani",
+    "Odia",
+    "Assamese"
+  ];
   String selectedLanguage = languages.first.toString();
 
   AlbumsComponent albumsComponent = AlbumsComponent();
@@ -71,19 +89,35 @@ class _HomePageState extends State<HomePage> {
             titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
             backgroundColor: Colors.blue,
             actions: [
-              DropdownMenu(
-                initialSelection: selectedLanguage,
-                onSelected: (String? value) {
-                  // This is called when the user selects an item.
-                  setState(() {
-                    selectedLanguage = value!;
-                    callData();
-                  });
-                },
-                dropdownMenuEntries:
-                    languages.map<DropdownMenuEntry<String>>((String value) {
-                  return DropdownMenuEntry<String>(value: value, label: value);
-                }).toList(),
+              Row(
+                children: [
+                  const Text(
+                    "Language: ",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                  DropdownMenu(
+                    initialSelection: selectedLanguage,
+                    textStyle: const TextStyle(
+                        fontSize: 14,
+                        //fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                    onSelected: (String? value) {
+                      // This is called when the user selects an item.
+                      setState(() {
+                        selectedLanguage = value!;
+                        callData();
+                      });
+                    },
+                    dropdownMenuEntries: languages
+                        .map<DropdownMenuEntry<String>>((String value) {
+                      return DropdownMenuEntry<String>(
+                          value: value, label: value);
+                    }).toList(),
+                  ),
+                ],
               ),
             ]),
         body: mainContent(),
