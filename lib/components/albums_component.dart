@@ -5,10 +5,13 @@ class AlbumsComponent {
   InkWell albumCard(HomeAlbums homeAlbum, BuildContext context) {
     return InkWell(
       child: Container(
-        width: 200,
+        width: 250,
         decoration: boxDecoration(homeAlbum),
         child: childElements(homeAlbum),
       ),
+      onTap: () {
+        print(homeAlbum.albumid);
+      },
     );
   }
 
@@ -38,7 +41,7 @@ class AlbumsComponent {
       homeAlbum.year.toString(),
       textAlign: TextAlign.center,
       style: const TextStyle(
-          color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+          color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
     );
   }
 
@@ -47,14 +50,14 @@ class AlbumsComponent {
       homeAlbum.artist!.music![0].name.toString(),
       textAlign: TextAlign.center,
       style: const TextStyle(
-          color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+          color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
     );
   }
 
   Text titleText(HomeAlbums homeAlbum) {
     return Text(
       homeAlbum.title.toString(),
-      textAlign: TextAlign.center,
+      textAlign: TextAlign.start,
       style: const TextStyle(
           color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
     );
@@ -75,7 +78,7 @@ class AlbumsComponent {
         image: NetworkImage(
           homeAlbum.image!.replaceAll("150x150", "500x500"),
         ),
-        fit: BoxFit.cover,
+        fit: BoxFit.fill,
         filterQuality: FilterQuality.high,
       ),
       borderRadius: const BorderRadius.all(Radius.circular(10)),
