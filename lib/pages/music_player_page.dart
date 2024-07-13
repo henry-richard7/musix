@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:html_unescape/html_unescape.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musix/api/jio.dart';
+import 'package:musix/components/common.dart';
 import 'package:musix/components/music_player_controls.dart';
-import 'package:musix/models/position_data.dart';
 import 'package:rxdart/rxdart.dart';
 
 class MusicPlayerPage extends StatefulWidget {
@@ -79,6 +80,15 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
                               ),
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              HtmlUnescape().convert(songDetails['album']),
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
                           Container(
                             width: 380,
                             height: 380,
@@ -96,6 +106,43 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
                                 Radius.circular(8),
                               ),
                             ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Text(
+                                  HtmlUnescape().convert(songDetails['song']),
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Text(
+                            HtmlUnescape()
+                                .convert(songDetails['primary_artists']),
+                            style: const TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          StreamBuilder<PositionData>(
+                            stream: _positionDataStream,
+                            builder: (context, snapshot) {
+                              final positionData = snapshot.data;
+                              return SeekBar(
+                                duration:
+                                    positionData?.duration ?? Duration.zero,
+                                position:
+                                    positionData?.position ?? Duration.zero,
+                                bufferedPosition:
+                                    positionData?.bufferedPosition ??
+                                        Duration.zero,
+                                onChangeEnd: audioPlayer.seek,
+                              );
+                            },
                           ),
                           Padding(
                               padding: const EdgeInsets.all(8.0),

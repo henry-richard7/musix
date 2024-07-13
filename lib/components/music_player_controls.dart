@@ -26,13 +26,13 @@ class MusicPlayerControls extends StatelessWidget {
               );
             } else if (playing != true) {
               return IconButton(
-                icon: const Icon(Icons.play_arrow),
+                icon: const Icon(Icons.play_circle_fill_rounded),
                 iconSize: 64.0,
                 onPressed: player.play,
               );
             } else if (processingState != ProcessingState.completed) {
               return IconButton(
-                icon: const Icon(Icons.pause),
+                icon: const Icon(Icons.pause_circle_filled_rounded),
                 iconSize: 64.0,
                 onPressed: player.pause,
               );
