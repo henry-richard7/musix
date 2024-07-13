@@ -1,11 +1,22 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:dart_des/dart_des.dart';
 
 class JioApi {
   static const String jioApiBase = "https://www.jiosaavn.com/api.php";
-  static final key = encrypt.Key.fromUtf8('38346591');
-  static final iv = encrypt.IV.fromLength(8);
+
+  static String decryptUrl(String url) {
+    final encUrl = base64Decode(url);
+    const key = '38346591';
+
+    final desCipher = DES(
+        key: key.codeUnits,
+        mode: DESMode.ECB,
+        iv: List.filled(8, 0),
+        paddingType: DESPaddingType.PKCS5);
+    final decUrl = utf8.decode(desCipher.decrypt(encUrl));
+    return decUrl.replaceAll('_96.mp4', '_320.mp4');
+  }
 
   static Future<Map<String, dynamic>> homePage(String language) async {
     Map<String, dynamic> queryParameters = {
@@ -60,7 +71,7 @@ class JioApi {
       "cc": "in",
       "pids": songId,
       "_format": "json",
-      "_marker": 0,
+      "_marker": "0",
     };
 
     Uri searchPageUrl =

@@ -1,18 +1,20 @@
 name: musix
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=3.4.3 <4.0.0'
+  sdk: ">=3.4.3 <4.0.0"
 
 dependencies:
-  encrypt: ^5.0.3
+  dart_des: ^1.0.2
   flutter:
     sdk: flutter
   html: ^0.15.4
   html_unescape: ^2.0.0
   http: ^1.2.1
+  just_audio: ^0.9.39
+  just_audio_windows: ^0.2.1
 
 dev_dependencies:
   flutter_test:

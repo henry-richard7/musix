@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:musix/api/jio.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'package:musix/pages/music_player_page.dart';
 
 class AlbumDetailsPage extends StatefulWidget {
   const AlbumDetailsPage({super.key, required this.albumId});
@@ -141,6 +142,14 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                   ),
                   onTap: () {
                     var songId = songs[index]['id'];
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MusicPlayerPage(
+                          songId: songId,
+                        ),
+                      ),
+                    );
                   },
                 ),
               );
