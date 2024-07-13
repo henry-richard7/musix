@@ -76,6 +76,7 @@ class _HomePageState extends State<HomePage> {
     callData();
   }
 
+  final searchTextFieldController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -87,22 +88,28 @@ class _HomePageState extends State<HomePage> {
             title: const Text("MusicX"),
             titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
             backgroundColor: Colors.blue,
-            actions: [
-              Row(
+            actions: []),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text(
-                    "Language: ",
+                    "Select Language:",
                     style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   DropdownMenu(
                     initialSelection: selectedLanguage,
                     textStyle: const TextStyle(
-                        fontSize: 14,
-                        //fontWeight: FontWeight.bold,
-                        color: Colors.white),
+                      fontSize: 14,
+                      //fontWeight: FontWeight.bold,
+                    ),
                     onSelected: (String? value) {
                       // This is called when the user selects an item.
                       setState(() {
@@ -118,8 +125,12 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-            ]),
-        body: mainContent(),
+            ),
+            Flexible(
+              child: mainContent(),
+            ),
+          ],
+        ),
       ),
     );
   }

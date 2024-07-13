@@ -90,8 +90,8 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
                             ),
                           ),
                           Container(
-                            width: 380,
-                            height: 380,
+                            width: 280,
+                            height: 280,
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: NetworkImage(
