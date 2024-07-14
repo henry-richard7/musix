@@ -99,8 +99,8 @@ class _SearchPageState extends State<SearchPage> {
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
-                if (albumsResult.isNotEmpty) albumSearchResultsWidgets(),
                 if (songsResult.isNotEmpty) songSearchResultsWidgets(),
+                if (albumsResult.isNotEmpty) albumSearchResultsWidgets(),
               ],
             ),
           ),
