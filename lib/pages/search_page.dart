@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:musix/api/jio.dart';
 import 'package:musix/components/album_search_component.dart';
+import 'package:musix/components/songs_search_component.dart';
 import 'package:musix/models/album_search_model.dart';
+import 'package:musix/models/artist_search_response.dart';
+import 'package:musix/models/playlist_search_response.dart';
+import 'package:musix/models/song_search_response.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -13,21 +17,34 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final searchTextFieldController = TextEditingController();
 
-  List<dynamic> songsResult = [];
+  List<SongSearchResponse> songsResult = [];
   List<AlbumSearchResponse> albumsResult = [];
-  List<dynamic> artistsResult = [];
-  List<dynamic> playlistsResult = [];
+
+  List<ArtistSearchResponse> artistsResult = [];
+  List<PlaylistSearchResponse> playlistsResult = [];
 
   void performSearch(String query) {
     JioApi.search(query).then((onValue) {
       setState(() {
         List<dynamic> _albumsResult = onValue['albums']['data'];
+        List<dynamic> _songsResult = onValue['songs']['data'];
+
+        List<dynamic> _artistsResult = onValue['artists']['data'];
+        List<dynamic> _playlistsResult = onValue['playlists']['data'];
+
         albumsResult =
             _albumsResult.map((e) => AlbumSearchResponse.fromJson(e)).toList();
-        songsResult = onValue['songs']['data'];
-        //albumsResult = onValue['albums']['data'];
-        artistsResult = onValue['artists']['data'];
-        playlistsResult = onValue['playlists']['data'];
+
+        songsResult =
+            _songsResult.map((e) => SongSearchResponse.fromJson(e)).toList();
+
+        artistsResult = _artistsResult
+            .map((e) => ArtistSearchResponse.fromJson(e))
+            .toList();
+
+        playlistsResult = _playlistsResult
+            .map((e) => PlaylistSearchResponse.fromJson(e))
+            .toList();
       });
     });
   }
@@ -77,30 +94,82 @@ class _SearchPageState extends State<SearchPage> {
             ],
           ),
         ),
-        if (albumsResult.isNotEmpty) albumSearchResultsWidgets()
+        Flexible(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                if (albumsResult.isNotEmpty) albumSearchResultsWidgets(),
+                if (songsResult.isNotEmpty) songSearchResultsWidgets(),
+              ],
+            ),
+          ),
+        )
       ],
     );
   }
 
-  Column albumSearchResultsWidgets() {
+  Padding albumSearchResultsWidgets() {
     AlbumsSearchComponent albumsSearchComponent = AlbumsSearchComponent();
-    return Column(
-      children: [
-        const Text("Albums"),
-        SizedBox(
-          height: 280,
-          child: ListView.builder(
-              itemCount: albumsResult.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: albumsSearchComponent.albumCard(
-                      albumsResult[index], context),
-                );
-              }),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Albums",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(
+            height: 280,
+            child: ListView.builder(
+                itemCount: albumsResult.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: albumsSearchComponent.albumCard(
+                        albumsResult[index], context),
+                  );
+                }),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding songSearchResultsWidgets() {
+    SongsSearchComponent songsSearchComponent = SongsSearchComponent();
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Songs",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(
+            height: 280,
+            child: ListView.builder(
+                itemCount: songsResult.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: songsSearchComponent.albumCard(
+                        songsResult[index], context),
+                  );
+                }),
+          ),
+        ],
+      ),
     );
   }
 }
