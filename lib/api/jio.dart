@@ -50,10 +50,11 @@ class JioApi {
   static Future<Map<String, dynamic>> search(String query) async {
     Map<String, dynamic> queryParameters = {
       "__call": "autocomplete.get",
-      "query": query,
-      "ctx": "android",
       "_format": "json",
-      "_marker": 0,
+      "_marker": "0",
+      "cc": "in",
+      "includeMetaTags": "1",
+      "query": query,
     };
 
     Uri searchPageUrl =

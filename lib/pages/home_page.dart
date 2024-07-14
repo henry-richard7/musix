@@ -8,6 +8,7 @@ import 'package:musix/components/playlist_component.dart';
 import 'package:musix/models/charts_model.dart';
 import 'package:musix/models/featured_playlist.dart';
 import 'package:musix/models/home_albums.dart';
+import 'package:musix/pages/search_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   int currentPageIndex = 0;
-  final searchTextFieldController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -92,8 +93,8 @@ class _HomePageState extends State<HomePage> {
         ),
         body: [
           mainPageContents(),
-          Text("Search Page"),
-          Text("Fav Page"),
+          const SearchPage(),
+          const Text("Fav Page"),
         ][currentPageIndex],
         bottomNavigationBar: BottomNavigationBar(
           items: const [
