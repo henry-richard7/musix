@@ -76,6 +76,7 @@ class _HomePageState extends State<HomePage> {
     callData();
   }
 
+  int currentPageIndex = 0;
   final searchTextFieldController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -85,53 +86,82 @@ class _HomePageState extends State<HomePage> {
       ),
       home: Scaffold(
         appBar: AppBar(
-            title: const Text("MusicX"),
-            titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
-            backgroundColor: Colors.blue,
-            actions: []),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Select Language:",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  DropdownMenu(
-                    initialSelection: selectedLanguage,
-                    textStyle: const TextStyle(
-                      fontSize: 14,
-                      //fontWeight: FontWeight.bold,
-                    ),
-                    onSelected: (String? value) {
-                      // This is called when the user selects an item.
-                      setState(() {
-                        selectedLanguage = value!;
-                        callData();
-                      });
-                    },
-                    dropdownMenuEntries: languages
-                        .map<DropdownMenuEntry<String>>((String value) {
-                      return DropdownMenuEntry<String>(
-                          value: value, label: value);
-                    }).toList(),
-                  ),
-                ],
-              ),
+          title: const Text("MusicX"),
+          titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
+          backgroundColor: Colors.blue,
+        ),
+        body: [
+          mainPageContents(),
+          Text("Search Page"),
+          Text("Fav Page"),
+        ][currentPageIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
             ),
-            Flexible(
-              child: mainContent(),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: 'Favorites',
             ),
           ],
+          currentIndex: currentPageIndex,
+          onTap: (value) {
+            setState(() {
+              currentPageIndex = value;
+            });
+          },
         ),
       ),
+    );
+  }
+
+  Column mainPageContents() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                "Select Language:",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              DropdownMenu(
+                initialSelection: selectedLanguage,
+                textStyle: const TextStyle(
+                  fontSize: 14,
+                  //fontWeight: FontWeight.bold,
+                ),
+                onSelected: (String? value) {
+                  // This is called when the user selects an item.
+                  setState(() {
+                    selectedLanguage = value!;
+                    callData();
+                  });
+                },
+                dropdownMenuEntries:
+                    languages.map<DropdownMenuEntry<String>>((String value) {
+                  return DropdownMenuEntry<String>(value: value, label: value);
+                }).toList(),
+              ),
+            ],
+          ),
+        ),
+        Flexible(
+          child: mainContent(),
+        ),
+      ],
     );
   }
 
