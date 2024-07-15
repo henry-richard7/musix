@@ -37,18 +37,19 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
       ),
       home: Scaffold(
         appBar: AppBar(
-            title: const Text("MusicX - Album Details"),
-            titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
-            backgroundColor: Colors.blue,
-            leading: IconButton(
-              icon: const Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                (Navigator.pop(context));
-              },
-            )),
+          title: const Text("MusicX - Album Details"),
+          titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
+          backgroundColor: Colors.blue,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              (Navigator.pop(context));
+            },
+          ),
+        ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: (isLoaded)

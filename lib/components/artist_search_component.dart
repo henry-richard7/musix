@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musix/models/artist_search_response.dart';
+import 'package:musix/pages/artist_details_page.dart';
 
 class ArtistsSearchComponent {
   InkWell albumCard(
@@ -11,14 +12,14 @@ class ArtistsSearchComponent {
         child: childElements(artistSearchResponse),
       ),
       onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => AlbumDetailsPage(
-        //       albumId: artistSearchResponse.id.toString(),
-        //     ),
-        //   ),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ArtistDetailsPage(
+              artistId: artistSearchResponse.id.toString(),
+            ),
+          ),
+        );
       },
     );
   }
