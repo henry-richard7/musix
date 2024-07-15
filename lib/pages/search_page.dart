@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:musix/api/jio.dart';
 import 'package:musix/components/album_search_component.dart';
+import 'package:musix/components/artist_search_component.dart';
+import 'package:musix/components/playlist_search_component.dart';
 import 'package:musix/components/songs_search_component.dart';
 import 'package:musix/models/album_search_model.dart';
 import 'package:musix/models/artist_search_response.dart';
@@ -101,6 +103,8 @@ class _SearchPageState extends State<SearchPage> {
               children: [
                 if (songsResult.isNotEmpty) songSearchResultsWidgets(),
                 if (albumsResult.isNotEmpty) albumSearchResultsWidgets(),
+                if (artistsResult.isNotEmpty) artistSearchResultsWidgets(),
+                if (playlistsResult.isNotEmpty) playlistSearchResultsWidgets(),
               ],
             ),
           ),
@@ -165,6 +169,71 @@ class _SearchPageState extends State<SearchPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: songsSearchComponent.albumCard(
                         songsResult[index], context),
+                  );
+                }),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding artistSearchResultsWidgets() {
+    ArtistsSearchComponent artistsSearchComponent = ArtistsSearchComponent();
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Artists",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(
+            height: 280,
+            child: ListView.builder(
+                itemCount: artistsResult.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: artistsSearchComponent.albumCard(
+                        artistsResult[index], context),
+                  );
+                }),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding playlistSearchResultsWidgets() {
+    PlaylistsSearchComponent artistsSearchComponent =
+        PlaylistsSearchComponent();
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Playlists",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(
+            height: 280,
+            child: ListView.builder(
+                itemCount: playlistsResult.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: artistsSearchComponent.albumCard(
+                        playlistsResult[index], context),
                   );
                 }),
           ),
