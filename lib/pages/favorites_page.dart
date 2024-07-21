@@ -11,13 +11,6 @@ class FavoritesPage extends StatefulWidget {
 
 class _FavoritesPageState extends State<FavoritesPage> {
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    print("State Called");
-  }
-
-  @override
   Widget build(BuildContext context) {
     QueryFavorite queryFavorite = QueryFavorite();
 
