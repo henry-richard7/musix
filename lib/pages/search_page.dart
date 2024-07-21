@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 import 'package:musix/api/jio.dart';
 import 'package:musix/components/album_search_component.dart';
@@ -28,23 +30,23 @@ class _SearchPageState extends State<SearchPage> {
   void performSearch(String query) {
     JioApi.search(query).then((onValue) {
       setState(() {
-        List<dynamic> albumsResult = onValue['albums']['data'];
-        List<dynamic> songsResult = onValue['songs']['data'];
+        List<dynamic> _albumsResult = onValue['albums']['data'];
+        List<dynamic> _songsResult = onValue['songs']['data'];
 
-        List<dynamic> artistsResult = onValue['artists']['data'];
-        List<dynamic> playlistsResult = onValue['playlists']['data'];
+        List<dynamic> _artistsResult = onValue['artists']['data'];
+        List<dynamic> _playlistsResult = onValue['playlists']['data'];
 
         albumsResult =
-            albumsResult.map((e) => AlbumSearchResponse.fromJson(e)).toList();
+            _albumsResult.map((e) => AlbumSearchResponse.fromJson(e)).toList();
 
         songsResult =
-            songsResult.map((e) => SongSearchResponse.fromJson(e)).toList();
+            _songsResult.map((e) => SongSearchResponse.fromJson(e)).toList();
 
-        artistsResult = artistsResult
+        artistsResult = _artistsResult
             .map((e) => ArtistSearchResponse.fromJson(e))
             .toList();
 
-        playlistsResult = playlistsResult
+        playlistsResult = _playlistsResult
             .map((e) => PlaylistSearchResponse.fromJson(e))
             .toList();
       });
