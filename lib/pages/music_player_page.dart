@@ -144,6 +144,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
                                       null) {
                                     setState(() {
                                       FavoriteItem newFavorite = FavoriteItem(
+                                          songId: widget.songId,
                                           songName: HtmlUnescape()
                                               .convert(songDetails['song']),
                                           albumName: HtmlUnescape()
@@ -158,6 +159,11 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
 
                                       queryFavorite.addFavorite(
                                           widget.songId, newFavorite);
+                                    });
+                                  } else {
+                                    setState(() {
+                                      queryFavorite
+                                          .removeFavorite(widget.songId);
                                     });
                                   }
                                 },

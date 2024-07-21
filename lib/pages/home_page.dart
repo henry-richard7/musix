@@ -8,6 +8,7 @@ import 'package:musix/components/playlist_component.dart';
 import 'package:musix/models/charts_model.dart';
 import 'package:musix/models/featured_playlist.dart';
 import 'package:musix/models/home_albums.dart';
+import 'package:musix/pages/favorites_page.dart';
 import 'package:musix/pages/search_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -94,7 +95,7 @@ class _HomePageState extends State<HomePage> {
         body: [
           mainPageContents(),
           const SearchPage(),
-          const Text("Fav Page"),
+          const FavoritesPage(),
         ][currentPageIndex],
         bottomNavigationBar: BottomNavigationBar(
           items: const [

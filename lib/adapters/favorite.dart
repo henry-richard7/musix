@@ -5,24 +5,29 @@ part 'favorite.g.dart';
 @HiveType(typeId: 1, adapterName: "FavoriteAdapter")
 class FavoriteItem {
   @HiveField(0)
-  String songName;
+  String songId;
 
   @HiveField(1)
-  String albumName;
+  String songName;
 
   @HiveField(2)
-  String art;
+  String albumName;
 
   @HiveField(3)
-  String primaryArtists;
+  String art;
 
   @HiveField(4)
+  String primaryArtists;
+
+  @HiveField(5)
   String streamLink;
 
-  FavoriteItem(
-      {required this.songName,
-      required this.albumName,
-      required this.art,
-      required this.primaryArtists,
-      required this.streamLink});
+  FavoriteItem({
+    required this.songId,
+    required this.songName,
+    required this.albumName,
+    required this.art,
+    required this.primaryArtists,
+    required this.streamLink,
+  });
 }

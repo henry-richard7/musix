@@ -17,27 +17,30 @@ class FavoriteAdapter extends TypeAdapter<FavoriteItem> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return FavoriteItem(
-      songName: fields[0] as String,
-      albumName: fields[1] as String,
-      art: fields[2] as String,
-      primaryArtists: fields[3] as String,
-      streamLink: fields[4] as String,
+      songId: fields[0] as String,
+      songName: fields[1] as String,
+      albumName: fields[2] as String,
+      art: fields[3] as String,
+      primaryArtists: fields[4] as String,
+      streamLink: fields[5] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, FavoriteItem obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
-      ..write(obj.songName)
+      ..write(obj.songId)
       ..writeByte(1)
-      ..write(obj.albumName)
+      ..write(obj.songName)
       ..writeByte(2)
-      ..write(obj.art)
+      ..write(obj.albumName)
       ..writeByte(3)
-      ..write(obj.primaryArtists)
+      ..write(obj.art)
       ..writeByte(4)
+      ..write(obj.primaryArtists)
+      ..writeByte(5)
       ..write(obj.streamLink);
   }
 

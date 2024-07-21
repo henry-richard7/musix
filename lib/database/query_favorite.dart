@@ -15,4 +15,18 @@ class QueryFavorite {
     FavoriteItem? favoriteModel = favoriteBox.get(songId);
     return favoriteModel;
   }
+
+  Iterable<dynamic> getAllFavorites() {
+    var favoriteBox = Hive.box('favorites');
+    Iterable<dynamic> allFavoriteItems = favoriteBox.values;
+
+    return allFavoriteItems;
+  }
+
+  void removeFavorite(
+    String songId,
+  ) {
+    var favoriteBox = Hive.box('favorites');
+    favoriteBox.delete(songId);
+  }
 }
