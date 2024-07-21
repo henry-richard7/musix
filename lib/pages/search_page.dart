@@ -28,23 +28,23 @@ class _SearchPageState extends State<SearchPage> {
   void performSearch(String query) {
     JioApi.search(query).then((onValue) {
       setState(() {
-        List<dynamic> _albumsResult = onValue['albums']['data'];
-        List<dynamic> _songsResult = onValue['songs']['data'];
+        List<dynamic> albumsResult = onValue['albums']['data'];
+        List<dynamic> songsResult = onValue['songs']['data'];
 
-        List<dynamic> _artistsResult = onValue['artists']['data'];
-        List<dynamic> _playlistsResult = onValue['playlists']['data'];
+        List<dynamic> artistsResult = onValue['artists']['data'];
+        List<dynamic> playlistsResult = onValue['playlists']['data'];
 
         albumsResult =
-            _albumsResult.map((e) => AlbumSearchResponse.fromJson(e)).toList();
+            albumsResult.map((e) => AlbumSearchResponse.fromJson(e)).toList();
 
         songsResult =
-            _songsResult.map((e) => SongSearchResponse.fromJson(e)).toList();
+            songsResult.map((e) => SongSearchResponse.fromJson(e)).toList();
 
-        artistsResult = _artistsResult
+        artistsResult = artistsResult
             .map((e) => ArtistSearchResponse.fromJson(e))
             .toList();
 
-        playlistsResult = _playlistsResult
+        playlistsResult = playlistsResult
             .map((e) => PlaylistSearchResponse.fromJson(e))
             .toList();
       });

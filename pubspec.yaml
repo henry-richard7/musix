@@ -15,12 +15,17 @@ dependencies:
   http: ^1.2.1
   just_audio: ^0.9.39
   just_audio_windows: ^0.2.1
+  path: ^1.9.0
   rxdart: ^0.28.0
+  hive:
+  hive_flutter:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+  hive_generator:
+  build_runner:
 
 flutter:
   uses-material-design: true

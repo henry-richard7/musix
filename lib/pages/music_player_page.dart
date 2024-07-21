@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musix/adapters/favorite.dart';
 import 'package:musix/api/jio.dart';
 import 'package:musix/components/common.dart';
 import 'package:musix/components/music_player_controls.dart';
+import 'package:musix/database/query_favorite.dart';
 import 'package:rxdart/rxdart.dart';
 
 class MusicPlayerPage extends StatefulWidget {
@@ -19,6 +21,8 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
   String songUrl = "";
   bool isLoaded = false;
   AudioPlayer audioPlayer = AudioPlayer();
+
+  QueryFavorite queryFavorite = QueryFavorite();
   @override
   void initState() {
     super.initState();
@@ -107,26 +111,64 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Text(
-                                  HtmlUnescape().convert(songDetails['song']),
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+                          Wrap(
+                            //mainAxisAlignment: MainAxisAlignment.center,\
+                            alignment: WrapAlignment.center,
+                            children: [
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      HtmlUnescape()
+                                          .convert(songDetails['song']),
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Text(
-                            HtmlUnescape()
-                                .convert(songDetails['primary_artists']),
-                            style: const TextStyle(
-                              fontSize: 18,
-                            ),
+                                  Text(
+                                    HtmlUnescape().convert(
+                                        songDetails['primary_artists']),
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  if (queryFavorite
+                                          .getFavorite(widget.songId) ==
+                                      null) {
+                                    setState(() {
+                                      FavoriteItem newFavorite = FavoriteItem(
+                                          songName: HtmlUnescape()
+                                              .convert(songDetails['song']),
+                                          albumName: HtmlUnescape()
+                                              .convert(songDetails['album']),
+                                          art: songDetails['image']
+                                              .toString()
+                                              .replaceAll("150x150", "500x500"),
+                                          primaryArtists: HtmlUnescape()
+                                              .convert(songDetails[
+                                                  'primary_artists']),
+                                          streamLink: songUrl);
+
+                                      queryFavorite.addFavorite(
+                                          widget.songId, newFavorite);
+                                    });
+                                  }
+                                },
+                                icon: (queryFavorite
+                                            .getFavorite(widget.songId) ==
+                                        null)
+                                    ? const Icon(Icons.favorite_border_outlined)
+                                    : const Icon(Icons.favorite),
+                                iconSize: 30.0,
+                              )
+                            ],
                           ),
                           StreamBuilder<PositionData>(
                             stream: _positionDataStream,

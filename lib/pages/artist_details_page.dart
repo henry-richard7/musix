@@ -158,7 +158,7 @@ class topSongsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String album_data;
+    String albumData;
     return SizedBox(
       height: 280,
       child: ListView.builder(
@@ -166,9 +166,9 @@ class topSongsWidget extends StatelessWidget {
         itemCount: topSongs.length,
         itemBuilder: (context, index) {
           if (topSongs[index]['type'] == 'song') {
-            album_data = topSongs[index]['more_info']['album'];
+            albumData = topSongs[index]['more_info']['album'];
           } else {
-            album_data = topSongs[index]['more_info']['artistMap']
+            albumData = topSongs[index]['more_info']['artistMap']
                 ['primary_artists'][0]['name'];
           }
           return Padding(
@@ -178,7 +178,7 @@ class topSongsWidget extends StatelessWidget {
                 topSongs[index]['title'],
                 topSongs[index]['image'],
                 topSongs[index]['year'],
-                album_data,
+                albumData,
                 topSongs[index]['type'],
                 context),
           );
