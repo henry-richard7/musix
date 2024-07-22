@@ -48,7 +48,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
                     ),
                   ),
                   onTap: () {
-                    var songId = "";
                     Navigator.push(
                       context,
                       MaterialPageRoute(
