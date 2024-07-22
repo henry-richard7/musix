@@ -6,10 +6,12 @@ import 'package:musix/components/album_search_component.dart';
 import 'package:musix/components/artist_search_component.dart';
 import 'package:musix/components/playlist_search_component.dart';
 import 'package:musix/components/songs_search_component.dart';
+import 'package:musix/components/specific_song_component.dart';
 import 'package:musix/models/album_search_model.dart';
 import 'package:musix/models/artist_search_response.dart';
 import 'package:musix/models/playlist_search_response.dart';
 import 'package:musix/models/song_search_response.dart';
+import 'package:musix/models/specific_song_result_model.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -17,6 +19,8 @@ class SearchPage extends StatefulWidget {
   @override
   State<SearchPage> createState() => _SearchPageState();
 }
+
+enum SearchOptions { all, songs, artists, albums, playlists }
 
 class _SearchPageState extends State<SearchPage> {
   final searchTextFieldController = TextEditingController();
@@ -27,7 +31,9 @@ class _SearchPageState extends State<SearchPage> {
   List<ArtistSearchResponse> artistsResult = [];
   List<PlaylistSearchResponse> playlistsResult = [];
 
-  void performSearch(String query) {
+  SearchOptions? searchOptions = SearchOptions.all;
+
+  void performAllSearch(String query) {
     JioApi.search(query).then((onValue) {
       setState(() {
         List<dynamic> _albumsResult = onValue['albums']['data'];
@@ -49,6 +55,43 @@ class _SearchPageState extends State<SearchPage> {
         playlistsResult = _playlistsResult
             .map((e) => PlaylistSearchResponse.fromJson(e))
             .toList();
+      });
+    });
+  }
+
+  List<SpecificSongResultModel> specificSearchSongResults = [];
+  List<dynamic> specificSearchAlbumResults = [];
+  List<dynamic> specificSearchArtistResults = [];
+  List<dynamic> specificSearchPlaylistResults = [];
+  SpecificSongComponent specificSongComponent = SpecificSongComponent();
+
+  void performSpecificSearch(String query) {
+    String searchType = (searchOptions == SearchOptions.songs)
+        ? "getResults"
+        : (searchOptions == SearchOptions.albums)
+            ? "getAlbumResults"
+            : (searchOptions == SearchOptions.artists)
+                ? "getArtistResults"
+                : "getPlaylistResults";
+    JioApi.specificSearch(searchType, query).then((onValue) {
+      setState(() {
+        List<dynamic> results = onValue['results'];
+
+        for (final result in results) {
+          if (result['type'] == 'song') {
+            specificSearchSongResults.add(
+              SpecificSongResultModel(
+                songId: result['id'],
+                songName: result['title'],
+                albumName: result['more_info']['album'],
+                art: result['image'],
+                artist: result["more_info"]["artistMap"]["primary_artists"]![0]
+                    ["name"],
+                year: result['year'],
+              ),
+            );
+          }
+        }
       });
     });
   }
@@ -88,8 +131,16 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                       );
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    } else if (searchOptions == SearchOptions.all) {
+                      performAllSearch(searchTextFieldController.text);
                     } else {
-                      performSearch(searchTextFieldController.text);
+                      setState(() {
+                        specificSearchAlbumResults.clear();
+                        specificSearchArtistResults.clear();
+                        specificSearchPlaylistResults.clear();
+                        specificSearchSongResults.clear();
+                        performSpecificSearch(searchTextFieldController.text);
+                      });
                     }
                   },
                   icon: const Icon(Icons.search),
@@ -98,20 +149,121 @@ class _SearchPageState extends State<SearchPage> {
             ],
           ),
         ),
+        searchOptionRadio(),
         Flexible(
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
-                if (songsResult.isNotEmpty) songSearchResultsWidgets(),
-                if (albumsResult.isNotEmpty) albumSearchResultsWidgets(),
-                if (artistsResult.isNotEmpty) artistSearchResultsWidgets(),
-                if (playlistsResult.isNotEmpty) playlistSearchResultsWidgets(),
+                if ((songsResult.isNotEmpty) &&
+                    (searchOptions == SearchOptions.all))
+                  songSearchResultsWidgets(),
+                if ((albumsResult.isNotEmpty) &&
+                    (searchOptions == SearchOptions.all))
+                  albumSearchResultsWidgets(),
+                if ((artistsResult.isNotEmpty) &&
+                    (searchOptions == SearchOptions.all))
+                  artistSearchResultsWidgets(),
+                if ((playlistsResult.isNotEmpty) &&
+                    (searchOptions == SearchOptions.all))
+                  playlistSearchResultsWidgets(),
+                if ((specificSearchSongResults.isNotEmpty) &&
+                    (searchOptions == SearchOptions.songs))
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                        height: 900, child: specificSongsWidgets(context)),
+                  )
               ],
             ),
           ),
-        )
+        ),
       ],
+    );
+  }
+
+  GridView specificSongsWidgets(BuildContext context) {
+    return GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: (MediaQuery.of(context).size.width ~/ 250).toInt(),
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 5,
+        ),
+        itemCount: specificSearchSongResults.length,
+        scrollDirection: Axis.vertical,
+        itemBuilder: (context, index) {
+          final songItem_ = specificSearchSongResults[index];
+          return specificSongComponent.albumCard(songItem_, context);
+        });
+  }
+
+  SingleChildScrollView searchOptionRadio() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          SizedBox(
+            width: 117,
+            child: RadioListTile<SearchOptions>(
+                value: SearchOptions.all,
+                groupValue: searchOptions,
+                title: const Text("All"),
+                onChanged: (SearchOptions? value) {
+                  setState(() {
+                    searchOptions = value;
+                  });
+                }),
+          ),
+          SizedBox(
+            width: 144,
+            child: RadioListTile<SearchOptions>(
+                value: SearchOptions.songs,
+                groupValue: searchOptions,
+                title: const Text("Songs"),
+                onChanged: (SearchOptions? value) {
+                  setState(() {
+                    searchOptions = value;
+                  });
+                }),
+          ),
+          SizedBox(
+            width: 160,
+            child: RadioListTile<SearchOptions>(
+                value: SearchOptions.albums,
+                groupValue: searchOptions,
+                title: const Text("Albums"),
+                onChanged: (SearchOptions? value) {
+                  setState(() {
+                    searchOptions = value;
+                  });
+                }),
+          ),
+          SizedBox(
+            width: 150,
+            child: RadioListTile<SearchOptions>(
+                value: SearchOptions.artists,
+                groupValue: searchOptions,
+                title: const Text("Artists"),
+                onChanged: (SearchOptions? value) {
+                  setState(() {
+                    searchOptions = value;
+                  });
+                }),
+          ),
+          SizedBox(
+            width: 170,
+            child: RadioListTile<SearchOptions>(
+                value: SearchOptions.playlists,
+                groupValue: searchOptions,
+                title: const Text("Playlists"),
+                onChanged: (SearchOptions? value) {
+                  setState(() {
+                    searchOptions = value;
+                  });
+                }),
+          )
+        ],
+      ),
     );
   }
 

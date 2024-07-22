@@ -66,6 +66,27 @@ class JioApi {
     return decodedResponse;
   }
 
+  static Future<Map<String, dynamic>> specificSearch(
+      String searchType, String query) async {
+    Map<String, dynamic> queryParameters = {
+      "__call": "search.$searchType",
+      "_format": "json",
+      "_marker": "0",
+      "n": "151353",
+      "api_version": "4",
+      "ctx": "web6dot0",
+      "q": query,
+    };
+
+    Uri searchPageUrl =
+        Uri.parse(jioApiBase).replace(queryParameters: queryParameters);
+
+    var request = await http.get(searchPageUrl);
+    Map<String, dynamic> decodedResponse = jsonDecode(request.body);
+
+    return decodedResponse;
+  }
+
   static Future<Map<String, dynamic>> artistDetails(String artistId) async {
     Map<String, dynamic> queryParameters = {
       "__call": "artist.getArtistPageDetails",
