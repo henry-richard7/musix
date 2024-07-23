@@ -13,13 +13,12 @@ Currently you can search and stream songs.
 
 # To-Do:
 
-- Specific search like songs,albums, ....
-- Add Download Feature.
 - Add Lyrics.
+- Add Download Feature.
 
 # Known Bugs
 
-- When removing favorited song, the same song still present in the list and gets removed when navigated to other page. (Working on it.)
+- When removing favorited song, the same song still present in the list and gets removed when navigated to other page. (Not a priority for now.)
 
 # The UI in the app not great, simple UI nothing fancy.
 

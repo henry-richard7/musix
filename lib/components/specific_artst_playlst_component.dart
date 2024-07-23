@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:musix/models/specific_song_result_model.dart';
-import 'package:musix/pages/album_details_page.dart';
-import 'package:musix/pages/music_player_page.dart';
+import 'package:musix/pages/artist_details_page.dart';
+import 'package:musix/pages/playlist_details_page.dart';
 
-class SpecificSongComponent {
+class SpecificArstPlaylstComponent {
   InkWell albumCard(
       SpecificSongResultModel specificSongResult, BuildContext context) {
     return InkWell(
@@ -13,21 +13,21 @@ class SpecificSongComponent {
         child: childElements(specificSongResult),
       ),
       onTap: () {
-        if (specificSongResult.type == "song") {
+        if (specificSongResult.type == "artist") {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => MusicPlayerPage(
-                songId: specificSongResult.songId.toString(),
+              builder: (context) => ArtistDetailsPage(
+                artistId: specificSongResult.songId.toString(),
               ),
             ),
           );
-        } else if (specificSongResult.type == "album") {
+        } else if (specificSongResult.type == "playlist") {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AlbumDetailsPage(
-                albumId: specificSongResult.songId.toString(),
+              builder: (context) => PlaylistDetailsPage(
+                playlistId: specificSongResult.songId.toString(),
               ),
             ),
           );
@@ -48,30 +48,10 @@ class SpecificSongComponent {
             textBaseline: TextBaseline.alphabetic,
             children: [
               titleText(specificSongResult),
-              artistText(specificSongResult),
-              releaseYear(specificSongResult)
             ],
           ),
         ),
       ],
-    );
-  }
-
-  Text releaseYear(SpecificSongResultModel specificSongResult) {
-    return Text(
-      specificSongResult.year.toString(),
-      textAlign: TextAlign.center,
-      style: const TextStyle(
-          color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
-    );
-  }
-
-  Text artistText(SpecificSongResultModel specificSongResult) {
-    return Text(
-      specificSongResult.artist.toString(),
-      textAlign: TextAlign.center,
-      style: const TextStyle(
-          color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
     );
   }
 
@@ -97,7 +77,9 @@ class SpecificSongComponent {
     return BoxDecoration(
       image: DecorationImage(
         image: NetworkImage(
-          specificSongResult.art.replaceAll("150x150", "500x500"),
+          specificSongResult.art
+              .replaceAll("50x50", "500x500")
+              .replaceAll("150x150", "500x500"),
         ),
         fit: BoxFit.fill,
         filterQuality: FilterQuality.high,

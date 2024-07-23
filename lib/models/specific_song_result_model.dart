@@ -5,6 +5,7 @@ class SpecificSongResultModel {
   final String art;
   final String artist;
   final String year;
+  final String type;
 
   SpecificSongResultModel(
       {required this.songId,
@@ -12,5 +13,6 @@ class SpecificSongResultModel {
       required this.albumName,
       required this.art,
       required this.artist,
-      required this.year});
+      required this.year,
+      required this.type});
 }

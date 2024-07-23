@@ -6,6 +6,7 @@ import 'package:musix/components/album_search_component.dart';
 import 'package:musix/components/artist_search_component.dart';
 import 'package:musix/components/playlist_search_component.dart';
 import 'package:musix/components/songs_search_component.dart';
+import 'package:musix/components/specific_artst_playlst_component.dart';
 import 'package:musix/components/specific_song_component.dart';
 import 'package:musix/models/album_search_model.dart';
 import 'package:musix/models/artist_search_response.dart';
@@ -60,10 +61,13 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   List<SpecificSongResultModel> specificSearchSongResults = [];
-  List<dynamic> specificSearchAlbumResults = [];
-  List<dynamic> specificSearchArtistResults = [];
-  List<dynamic> specificSearchPlaylistResults = [];
+  List<SpecificSongResultModel> specificSearchAlbumResults = [];
+  List<SpecificSongResultModel> specificSearchArtistResults = [];
+  List<SpecificSongResultModel> specificSearchPlaylistResults = [];
+
   SpecificSongComponent specificSongComponent = SpecificSongComponent();
+  SpecificArstPlaylstComponent specificArstPlaylstComponent =
+      SpecificArstPlaylstComponent();
 
   void performSpecificSearch(String query) {
     String searchType = (searchOptions == SearchOptions.songs)
@@ -88,6 +92,44 @@ class _SearchPageState extends State<SearchPage> {
                 artist: result["more_info"]["artistMap"]["primary_artists"]![0]
                     ["name"],
                 year: result['year'],
+                type: result['type'],
+              ),
+            );
+          } else if (result['type'] == 'album') {
+            specificSearchAlbumResults.add(
+              SpecificSongResultModel(
+                songId: result['id'],
+                songName: result['title'],
+                albumName: "",
+                art: result['image'],
+                artist: result["more_info"]["artistMap"]["primary_artists"]![0]
+                    ["name"],
+                year: result['year'],
+                type: result['type'],
+              ),
+            );
+          } else if (result['type'] == 'artist') {
+            specificSearchArtistResults.add(
+              SpecificSongResultModel(
+                songId: result['id'],
+                songName: result['name'],
+                albumName: "",
+                art: result['image'],
+                artist: "",
+                year: "",
+                type: "artist",
+              ),
+            );
+          } else if (result['type'] == 'playlist') {
+            specificSearchPlaylistResults.add(
+              SpecificSongResultModel(
+                songId: result['id'],
+                songName: result['title'],
+                albumName: "",
+                art: result['image'],
+                artist: "",
+                year: "",
+                type: "playlist",
               ),
             );
           }
@@ -173,6 +215,27 @@ class _SearchPageState extends State<SearchPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: SizedBox(
                         height: 900, child: specificSongsWidgets(context)),
+                  ),
+                if ((specificSearchAlbumResults.isNotEmpty) &&
+                    (searchOptions == SearchOptions.albums))
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                        height: 900, child: specificAlbumsWidgets(context)),
+                  ),
+                if ((specificSearchArtistResults.isNotEmpty) &&
+                    (searchOptions == SearchOptions.artists))
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                        height: 900, child: specificArtistsWidgets(context)),
+                  ),
+                if ((specificSearchPlaylistResults.isNotEmpty) &&
+                    (searchOptions == SearchOptions.playlists))
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                        height: 900, child: specificPlaylistsWidgets(context)),
                   )
               ],
             ),
@@ -180,6 +243,51 @@ class _SearchPageState extends State<SearchPage> {
         ),
       ],
     );
+  }
+
+  GridView specificPlaylistsWidgets(BuildContext context) {
+    return GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: (MediaQuery.of(context).size.width ~/ 250).toInt(),
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 5,
+        ),
+        itemCount: specificSearchPlaylistResults.length,
+        scrollDirection: Axis.vertical,
+        itemBuilder: (context, index) {
+          final songItem_ = specificSearchPlaylistResults[index];
+          return specificArstPlaylstComponent.albumCard(songItem_, context);
+        });
+  }
+
+  GridView specificArtistsWidgets(BuildContext context) {
+    return GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: (MediaQuery.of(context).size.width ~/ 250).toInt(),
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 5,
+        ),
+        itemCount: specificSearchArtistResults.length,
+        scrollDirection: Axis.vertical,
+        itemBuilder: (context, index) {
+          final songItem_ = specificSearchArtistResults[index];
+          return specificArstPlaylstComponent.albumCard(songItem_, context);
+        });
+  }
+
+  GridView specificAlbumsWidgets(BuildContext context) {
+    return GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: (MediaQuery.of(context).size.width ~/ 250).toInt(),
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 5,
+        ),
+        itemCount: specificSearchAlbumResults.length,
+        scrollDirection: Axis.vertical,
+        itemBuilder: (context, index) {
+          final songItem_ = specificSearchAlbumResults[index];
+          return specificSongComponent.albumCard(songItem_, context);
+        });
   }
 
   GridView specificSongsWidgets(BuildContext context) {
